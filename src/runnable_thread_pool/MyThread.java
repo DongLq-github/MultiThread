@@ -1,4 +1,4 @@
-package thread_pool;
+package runnable_thread_pool;
 
 
 public class MyThread implements Runnable {
