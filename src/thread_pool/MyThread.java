@@ -1,6 +1,5 @@
 package thread_pool;
 
-import java.util.concurrent.RejectedExecutionException;
 
 public class MyThread implements Runnable {
 

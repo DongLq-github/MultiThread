@@ -1,4 +1,4 @@
-package multi_thread01;
+package thread_runnable;
 
 
 public class MultiThread implements Runnable {

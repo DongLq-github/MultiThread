@@ -14,19 +14,20 @@ public class Test {
          * 等待队列最大任务数：50
          * ···java不推荐此方式手动创建线程池
          */
-        /*ThreadPoolExecutor executor = new ThreadPoolExecutor(5,
-                8,
-                1,
-                TimeUnit.SECONDS,
-                new LinkedBlockingDeque<>(50));*/
+        /*ThreadPoolExecutor executor = new ThreadPoolExecutor(5, //核心线程数
+                8,                                                //最大线程数
+                1,                                                //线程空闲存活时间
+                TimeUnit.SECONDS,                                 //超时时间单位
+                new LinkedBlockingDeque<>(50));*/                 //任务队列以及任务等待队列的最大任务数
 
         /**
-         * ···java推荐的创建方式，通过静态方法创建
+         * java推荐的创建方式，通过静态方法创建
+         * @param nThread线程数
          */
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
 
         try {
-            for (int i=0;i<100;i++){
+            for (int i=0;i<1000;i++){
                 Test.i = i;
                 MyThread td = new MyThread(i);
                 executor.execute(td);
