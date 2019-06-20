@@ -1,4 +1,4 @@
-package easy_excel;
+package easy_excel_write;
 
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.metadata.Sheet;
