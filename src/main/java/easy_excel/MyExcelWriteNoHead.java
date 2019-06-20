@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyExcelWrite {
+public class MyExcelWriteNoHead {
 
     public static void main(String[] args) {
 
@@ -18,7 +18,7 @@ public class MyExcelWrite {
         OutputStream outputStream = null;
 
         try {
-            outputStream = new FileOutputStream("D:\\test_excel_write.xlsx");
+            outputStream = new FileOutputStream("D:/test_excel_write.xlsx");
             /**
              * 输出流：outputStream
              * excel类型：ExcelTypeEnum.XLSX
@@ -32,7 +32,7 @@ public class MyExcelWrite {
 
             //创建List数据
             List<List<String>> list = new ArrayList<List<String>>();
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 2000; i++) {
                 List<String> item = new ArrayList<String>();
                 item.add(i+"行1列");
                 item.add(i+"行2列");
@@ -46,8 +46,12 @@ public class MyExcelWrite {
                 item.add(i+"行10列");
                 list.add(item);
             }
+            System.out.println("开始写入数据到excel····");
+            long start = System.currentTimeMillis();
             excelWrite.write0(list,sheet01);
             excelWrite.finish();
+            long end = System.currentTimeMillis();
+            System.out.println("文件写入成功！写入耗时"+(end-start)+"ms");
         }catch (FileNotFoundException e){
             System.out.println("捕获异常：文件未找到");
             e.printStackTrace();
