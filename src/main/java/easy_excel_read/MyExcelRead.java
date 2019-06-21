@@ -11,11 +11,11 @@ public class MyExcelRead {
     public static void main(String[] args) {
         InputStream input = null;
         try {
-            input = new FileInputStream("D:/test_write_head.xls");
+            input = new FileInputStream("D:/广州 科技5000.xls");
             ExcelListener listener = new ExcelListener();
             ExcelReader reader = new ExcelReader(input,ExcelTypeEnum.XLS,null,listener);
             //设置表头
-            reader.read(new Sheet(1,3));
+            reader.read(new Sheet(1,1));
         }catch (Exception e){
             e.printStackTrace();
         }finally {

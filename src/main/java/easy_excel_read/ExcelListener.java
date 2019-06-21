@@ -21,12 +21,23 @@ public class ExcelListener extends AnalysisEventListener {
     private List<Object> datas = new ArrayList<Object>();
     public void invoke(Object object, AnalysisContext context) {
         //System.out.println("当前行："+context.getCurrentRowNum());
-        System.out.println(object);
+        //暂时读取2000行数据
+        //if (context.getCurrentRowNum()>2000) return;
+        //System.out.println(object);
         datas.add(object);//数据存储到list，供批量处理，或后续自己业务逻辑处理。
         doSomething(object);//根据自己业务做处理
     }
     private void doSomething(Object object) {
         //1、入库调用接口
+        List<String> list = (ArrayList<String>)object;
+        list.remove(18);
+        list.remove(17);
+        list.remove(15);
+        list.remove(14);
+        list.remove(13);
+        list.remove(12);
+        list.remove(11);
+        System.out.println(list);
     }
     public void doAfterAllAnalysed(AnalysisContext context) {
         datas.clear();//解析结束销毁不用的资源
