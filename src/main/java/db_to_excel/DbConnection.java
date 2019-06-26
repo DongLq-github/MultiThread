@@ -33,9 +33,14 @@ public class DbConnection {
                 System.out.println(conn);
             }
 
-            String sql = "select * from log limit 0,10";
+            /*String sql = "select * from log limit 0,10";
             Statement ps = conn.createStatement();
-            ResultSet rs = ps.executeQuery(sql);
+            ResultSet rs = ps.executeQuery(sql);*/
+
+            String sql = "select * from log limit 0,?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1,100);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 System.out.print(rs.getString(1)+"\t");
                 System.out.print(rs.getString(2)+"\t");
