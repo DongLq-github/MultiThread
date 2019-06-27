@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MyThread implements Runnable {
+public class MyWriteThread implements Runnable {
 
     private int logsNum = 0;
     final String path = "D:/excel/log/";
 
-    public MyThread(int logsNum){
+    public MyWriteThread(int logsNum){
         this.logsNum = logsNum;
     }
 

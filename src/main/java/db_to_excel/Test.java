@@ -41,7 +41,7 @@ public class Test {
         System.out.println("主线程开始分配多个线程任务···");
         long start = System.currentTimeMillis();
         for (int i = 0; i < filesNum; i++) {
-            MyThread thread = new MyThread(i);
+            MyWriteThread thread = new MyWriteThread(i);
             executor.execute(thread);
         }
 
