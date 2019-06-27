@@ -27,14 +27,15 @@ public class MyThread implements Runnable {
         String threadName = Thread.currentThread().getName();
         System.out.println(threadName+": 开始运行···");
         try {
-            //获取数据库连接
-            Connection conn = DbConnection.getConnection();
             String sql = "select " +
                     "l.id, l.time, l.etime, l.content, l.explain, l.tel," +
                     "r.role role, u.real_name, u.student_id, s.name schname " +
                     "from log l left join role r on l.role_id = r.id " +
                     "left join user u on l.user_id = u.id " +
                     "left join school s on u.school = s.id limit ?,500";
+
+            //获取数据库连接
+            Connection conn = DbConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             System.out.println(threadName+": 已获取到数据库连接···");
 
@@ -75,7 +76,7 @@ public class MyThread implements Runnable {
             while(rs.next()){
                 List<String> data = new ArrayList<String>();
                 data.add(rs.getString(1));
-                data.add(rs.getString(2));
+                data.add(rs.getDate(2).toString()+" "+rs.getTime(2).toString());
                 data.add(rs.getString(3));
                 data.add(rs.getString(4));
                 data.add(rs.getString(5));
