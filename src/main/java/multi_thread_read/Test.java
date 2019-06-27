@@ -18,6 +18,7 @@ public class Test {
             for (File file : files) {
                 //xls结尾的文件入栈
                 if (file.getName().endsWith("xls")){
+                    System.out.println(file.getName());
                     stack.add(file.getAbsolutePath());
                 }
             }
