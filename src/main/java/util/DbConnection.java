@@ -1,4 +1,4 @@
-package db_to_excel;
+package util;
 
 import java.sql.*;
 

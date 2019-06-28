@@ -1,5 +1,7 @@
 package db_to_excel;
 
+import util.DbConnection;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
