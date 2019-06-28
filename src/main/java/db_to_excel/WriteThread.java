@@ -17,6 +17,7 @@ public class WriteThread implements Runnable {
 
     private int logsNum = 0;
     final String path = "D:/excel/log/";
+    final static int ROWS_NUM = 8000;//数据库每页读取的数据量，必须与每个文件写入的数据行数一致
 
     public WriteThread(int logsNum){
         this.logsNum = logsNum;
@@ -27,20 +28,25 @@ public class WriteThread implements Runnable {
         String threadName = Thread.currentThread().getName();
         System.out.println(threadName+": 开始运行···");
         try {
-            String sql = "select " +
+            /*String sql = "select " +
                     "l.id, l.time, l.etime, l.content, l.explain, l.tel," +
                     "r.role role, u.real_name, u.student_id, s.name schname " +
                     "from log l left join role r on l.role_id = r.id " +
                     "left join user u on l.user_id = u.id " +
-                    "left join school s on u.school = s.id limit ?,500";
+                    "left join school s on u.school = s.id limit ?,"+ROWS_NUM;*/
+            String sql = "select * from excel_to_db limit ?,"+ROWS_NUM;
 
             //获取数据库连接
             Connection conn = DbConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             System.out.println(threadName+": 已获取到数据库连接···");
 
-            //设置起始行数
-            if (logsNum != 0) logsNum = logsNum*500;
+            /**
+             * 设置起始行数
+             * 如果文件顺序是0，则代表第一个文件，从数据库第一行开始
+             * 如果不是第一个文件，则根据文件顺序计算从数据库第几行开始
+             */
+            if (logsNum != 0) logsNum = logsNum*ROWS_NUM;
             ps.setInt(1,logsNum);
 
             //从ps获得执行的SQL语句
@@ -51,7 +57,7 @@ public class WriteThread implements Runnable {
             ResultSet rs = ps.executeQuery();
 
             //创建输出流
-            String fileName = "log"+logsNum+".xls";
+            String fileName = "log_"+logsNum+".xls";
             OutputStream out = new FileOutputStream(path+fileName);
             ExcelWriter writer = new ExcelWriter(out,ExcelTypeEnum.XLS,true);
             System.out.println(threadName+": 已创建输出流···");
@@ -61,12 +67,11 @@ public class WriteThread implements Runnable {
             head.add(Arrays.asList("记录id"));
             head.add(Arrays.asList("操作时间"));
             head.add(Arrays.asList("执行耗时"));
-            head.add(Arrays.asList("操作内容"));
-            head.add(Arrays.asList("描述"));
+            head.add(Arrays.asList("接口方法"));
             head.add(Arrays.asList("电话"));
             head.add(Arrays.asList("用户角色"));
-            head.add(Arrays.asList("真实姓名"));
-            head.add(Arrays.asList("学生编号"));
+            head.add(Arrays.asList("姓名"));
+            head.add(Arrays.asList("学号"));
             head.add(Arrays.asList("学校名"));
 
             //设置表数据
@@ -84,7 +89,6 @@ public class WriteThread implements Runnable {
                 data.add(rs.getString(7));
                 data.add(rs.getString(8));
                 data.add(rs.getString(9));
-                data.add(rs.getString(10));
                 datas.add(data);
             }
 

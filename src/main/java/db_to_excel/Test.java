@@ -8,11 +8,13 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class Test {
 
+    final static int ROWS_NUM = 8000;//每个excel文件写入多少行数据
+
     public static void main(String[] args) {
         Connection conn = null;
         Statement stat = null;
         ResultSet rs = null;
-        String sql = "select count(id) from log";
+        String sql = "select count(id) from excel_to_db";
         int count = 0;
         int filesNum = 0;
         try {
@@ -31,7 +33,7 @@ public class Test {
         }
 
         //计算要创建多少个文件
-        filesNum = count%500!=0?count/500+1:count/500;
+        filesNum = count%ROWS_NUM!=0?count/ROWS_NUM+1:count/ROWS_NUM;
         System.out.println("主线程计算到需要创建文件数为："+filesNum);
 
         //创建线程池
@@ -41,6 +43,7 @@ public class Test {
         System.out.println("主线程开始分配多个线程任务···");
         long start = System.currentTimeMillis();
         for (int i = 0; i < filesNum; i++) {
+            //文件顺序，传参，好让线程知道这是第几个文件，计算出从数据库哪条数据开始
             WriteThread thread = new WriteThread(i);
             executor.execute(thread);
         }

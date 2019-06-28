@@ -33,18 +33,19 @@ public class ExcelListener extends AnalysisEventListener {
             row++;
             List<String> list = (ArrayList<String>)object;//强转
             ps.setString(1,list.get(1));
-            ps.setInt(2,Integer.parseInt(list.get(2)));
+            ps.setInt(2,Integer.parseInt(list.get(2).equals("")?(0+""):list.get(2)));
             ps.setString(3,list.get(3));
-            ps.setString(4,list.get(5));
-            ps.setString(5,list.get(6));
-            ps.setString(6,list.get(7));
-            ps.setString(7,list.get(8));
-            ps.setString(8,list.get(9));
+            ps.setString(4,list.get(4));
+            ps.setString(5,list.get(5));
+            ps.setString(6,list.get(6));
+            ps.setString(7,list.get(7));
+            ps.setString(8,list.get(8));
             ps.addBatch();
-        }catch (Exception e){
+        }catch (NumberFormatException e){
+            System.out.println(threadName+": 数据格式转换错误！！！"+fileName+row+e.getMessage());
+        } catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -56,8 +57,14 @@ public class ExcelListener extends AnalysisEventListener {
         System.out.println(threadName+": 成功读取分析文件 "+fileName);
         System.out.println(threadName+": 开始进行数据持久化···");
         try {
-            ps.executeBatch();
+            int[] array = ps.executeBatch();
+            //计算插入成功的记录数量
             System.out.println(threadName+": 成功持久化文件 "+fileName);
+            System.out.println(threadName+": 插入数据库记录："+array.length);
+            //加到主线程的总数量上
+            synchronized (this){
+                Test.rows_insert = Test.rows_insert+array.length;
+            }
             ps.close();
             conn.close();
         }catch (Exception e){
